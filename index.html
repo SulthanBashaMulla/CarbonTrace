@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CarbonTrace – Know Your Footprint</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+ <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav aria-label="Site navigation">
+  <div class="logo">Carbon<span>Trace</span></div>
+  <div class="nav-pill">Carbon Footprint Platform</div>
+  <div class="nav-dot" aria-hidden="true"></div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow">
+    <span>🌿</span> Climate Awareness Tool
+  </div>
+  <h1>Your footprint,<br><em>finally visible.</em></h1>
+  <p class="hero-sub">Calculate your monthly CO₂ emissions from travel, energy, food, and lifestyle — then take action.</p>
+  <button class="btn-primary" onclick="document.getElementById('calc-section').scrollIntoView({behavior:'smooth'})">
+    Calculate now →
+  </button>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <span class="hero-stat-num">133</span>
+      <span class="hero-stat-label">India avg (kg/mo)</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num">375</span>
+      <span class="hero-stat-label">Global avg (kg/mo)</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num">6</span>
+      <span class="hero-stat-label">Inputs needed</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- CALCULATOR -->
+  <section id="calc-section" aria-labelledby="calc-heading">
+    <div class="sec-header">
+      <span class="sec-step">Step 01</span>
+      <span class="sec-title">Enter your monthly activity</span>
+    </div>
+
+    <div class="calc-grid">
+      <div class="input-card">
+        <div class="card-header">
+          <div class="card-emoji">🚗</div>
+          <div class="card-info">
+            <label for="car-km">Car travel</label>
+            <div class="hint">km driven / month</div>
+          </div>
+        </div>
+        <input type="number" id="car-km" min="0" value="500" aria-label="Kilometres driven by car per month" />
+      </div>
+
+      <div class="input-card">
+        <div class="card-header">
+          <div class="card-emoji">✈️</div>
+          <div class="card-info">
+            <label for="flight-hrs">Flights</label>
+            <div class="hint">hours flown / month</div>
+          </div>
+        </div>
+        <input type="number" id="flight-hrs" min="0" value="0" aria-label="Hours flown per month" />
+      </div>
+
+      <div class="input-card">
+        <div class="card-header">
+          <div class="card-emoji">⚡</div>
+          <div class="card-info">
+            <label for="electricity">Electricity</label>
+            <div class="hint">kWh used / month</div>
+          </div>
+        </div>
+        <input type="number" id="electricity" min="0" value="200" aria-label="Electricity used in kWh per month" />
+      </div>
+
+      <div class="input-card">
+        <div class="card-header">
+          <div class="card-emoji">🍖</div>
+          <div class="card-info">
+            <label for="diet">Diet type</label>
+            <div class="hint">your typical diet</div>
+          </div>
+        </div>
+        <select id="diet" aria-label="Diet type">
+          <option value="meat-heavy">Meat-heavy</option>
+          <option value="average" selected>Average (some meat)</option>
+          <option value="vegetarian">Vegetarian</option>
+          <option value="vegan">Vegan</option>
+        </select>
+      </div>
+
+      <div class="input-card">
+        <div class="card-header">
+          <div class="card-emoji">🛍️</div>
+          <div class="card-info">
+            <label for="shopping">Shopping spend</label>
+            <div class="hint">₹ on goods / month</div>
+          </div>
+        </div>
+        <input type="number" id="shopping" min="0" value="5000" aria-label="Monthly shopping spend in rupees" />
+      </div>
+
+      <div class="input-card">
+        <div class="card-header">
+          <div class="card-emoji">🚌</div>
+          <div class="card-info">
+            <label for="public-km">Public transport</label>
+            <div class="hint">km / month (bus/train)</div>
+          </div>
+        </div>
+        <input type="number" id="public-km" min="0" value="100" aria-label="Kilometres on public transport per month" />
+      </div>
+    </div>
+
+    <div class="calc-btn-row">
+      <button class="btn-primary" onclick="calculate()">Calculate footprint →</button>
+      <button class="btn-secondary" onclick="resetForm()">Reset</button>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="result-panel" class="result-panel" aria-live="polite">
+
+    <div class="sec-header">
+      <span class="sec-step">Step 02</span>
+      <span class="sec-title">Your results</span>
+    </div>
+
+    <!-- RESULT HERO -->
+    <div class="result-hero-card">
+      <div class="result-main-row">
+        <div class="result-number-wrap">
+          <div id="result-number" class="result-number"></div>
+          <div class="result-unit-label">kg CO₂ per month</div>
+          <div id="result-label" class="result-verdict"></div>
+        </div>
+        <div class="gauge-container">
+          <svg id="gauge-svg" width="220" height="120" viewBox="0 0 220 120" aria-label="Emissions gauge" role="img">
+            <defs>
+              <linearGradient id="gGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%"   stop-color="#39ff8a"/>
+                <stop offset="50%"  stop-color="#ffb340"/>
+                <stop offset="100%" stop-color="#ff5252"/>
+              </linearGradient>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="2" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <path d="M 15 110 A 95 95 0 0 1 205 110" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="10" stroke-linecap="round"/>
+            <path id="gauge-fill" d="M 15 110 A 95 95 0 0 1 205 110" fill="none" stroke="url(#gGrad)" stroke-width="10" stroke-linecap="round" stroke-dasharray="298" stroke-dashoffset="298" style="transition:stroke-dashoffset 1.1s cubic-bezier(0.4,0,0.2,1)" filter="url(#glow)"/>
+            <line id="gauge-needle" x1="110" y1="110" x2="110" y2="22" stroke="rgba(240,247,240,0.8)" stroke-width="1.5" stroke-linecap="round" style="transform-origin:110px 110px; transition:transform 1.1s cubic-bezier(0.4,0,0.2,1)"/>
+            <circle cx="110" cy="110" r="4" fill="#f0f7f0"/>
+            <text x="12"  y="126" fill="#6b8a6b" font-size="9" font-family="JetBrains Mono,monospace">Low</text>
+            <text x="96"  y="16"  fill="#6b8a6b" font-size="9" font-family="JetBrains Mono,monospace">Mid</text>
+            <text x="192" y="126" fill="#6b8a6b" font-size="9" font-family="JetBrains Mono,monospace" text-anchor="end">High</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- BREAKDOWN -->
+      <div class="data-card-title">Breakdown by category</div>
+      <div id="breakdown-rows"></div>
+    </div>
+
+    <!-- TIPS -->
+    <div class="data-card">
+      <div class="data-card-title">Personalised recommendations</div>
+      <div id="tips-grid" class="tips-grid"></div>
+    </div>
+
+    <!-- COMPARE -->
+    <div class="data-card">
+      <div class="data-card-title">How you compare globally</div>
+      <p style="font-size:0.78rem;color:var(--muted);margin-bottom:1.2rem;">Monthly CO₂ emissions in kg</p>
+      <div id="compare-bars"></div>
+    </div>
+
+  </section>
+
+  <!-- PLEDGE -->
+  <section class="pledge-section" aria-labelledby="pledge-heading">
+    <h2 id="pledge-heading">Make a pledge 🌱</h2>
+    <p>Commit to one action this month. Every choice compounds.</p>
+    <div class="pledge-grid" role="group" aria-label="Select a pledge">
+      <button class="pledge-chip" onclick="pledge(this)">🚲 Cycle once a week</button>
+      <button class="pledge-chip" onclick="pledge(this)">🥗 One meat-free day</button>
+      <button class="pledge-chip" onclick="pledge(this)">💡 Switch to LEDs</button>
+      <button class="pledge-chip" onclick="pledge(this)">🛍️ Buy secondhand</button>
+      <button class="pledge-chip" onclick="pledge(this)">🚌 Use public transport</button>
+      <button class="pledge-chip" onclick="pledge(this)">🌳 Plant a tree</button>
+    </div>
+    <p id="pledge-msg" class="pledge-msg" aria-live="polite"></p>
+  </section>
+
+</main>
+
+<footer>
+  <p>CarbonTrace · Built for PromptWars Challenge 3 — Carbon Footprint Awareness Platform</p>
+  <p>Emission factors based on IPCC & IEA data · For awareness purposes only</p>
+  </footer>
+  <script src="script.js"></script>
+  
