@@ -3,9 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- SECURITY HEADERS -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:;" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta http-equiv="X-Frame-Options" content="DENY" />
+  <meta name="referrer" content="no-referrer" />
   <title>CarbonTrace – Know Your Footprint</title>
+  <meta name="description" content="Calculate your monthly carbon footprint from travel, energy, food and lifestyle. Get personalised tips to reduce your CO₂ emissions." />
+  <!-- PERFORMANCE: preconnect before stylesheet -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
- <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
@@ -23,10 +32,10 @@
   </div>
   <h1>Your footprint,<br><em>finally visible.</em></h1>
   <p class="hero-sub">Calculate your monthly CO₂ emissions from travel, energy, food, and lifestyle — then take action.</p>
-  <button class="btn-primary" onclick="document.getElementById('calc-section').scrollIntoView({behavior:'smooth'})">
+  <button class="btn-primary" onclick="document.getElementById('calc-section').scrollIntoView({behavior:'smooth'})" aria-label="Scroll to calculator">
     Calculate now →
   </button>
-  <div class="hero-stats">
+  <div class="hero-stats" aria-label="Reference statistics">
     <div class="hero-stat">
       <span class="hero-stat-num">133</span>
       <span class="hero-stat-label">India avg (kg/mo)</span>
@@ -48,52 +57,53 @@
   <section id="calc-section" aria-labelledby="calc-heading">
     <div class="sec-header">
       <span class="sec-step">Step 01</span>
-      <span class="sec-title">Enter your monthly activity</span>
+      <span class="sec-title" id="calc-heading">Enter your monthly activity</span>
     </div>
 
-    <div class="calc-grid">
+    <div class="calc-grid" role="group" aria-label="Activity inputs">
+
       <div class="input-card">
         <div class="card-header">
-          <div class="card-emoji">🚗</div>
+          <div class="card-emoji" aria-hidden="true">🚗</div>
           <div class="card-info">
             <label for="car-km">Car travel</label>
             <div class="hint">km driven / month</div>
           </div>
         </div>
-        <input type="number" id="car-km" min="0" value="500" aria-label="Kilometres driven by car per month" />
+        <input type="number" id="car-km" min="0" max="50000" value="500" autocomplete="off" aria-label="Kilometres driven by car per month" />
       </div>
 
       <div class="input-card">
         <div class="card-header">
-          <div class="card-emoji">✈️</div>
+          <div class="card-emoji" aria-hidden="true">✈️</div>
           <div class="card-info">
             <label for="flight-hrs">Flights</label>
             <div class="hint">hours flown / month</div>
           </div>
         </div>
-        <input type="number" id="flight-hrs" min="0" value="0" aria-label="Hours flown per month" />
+        <input type="number" id="flight-hrs" min="0" max="720" value="0" autocomplete="off" aria-label="Hours flown per month" />
       </div>
 
       <div class="input-card">
         <div class="card-header">
-          <div class="card-emoji">⚡</div>
+          <div class="card-emoji" aria-hidden="true">⚡</div>
           <div class="card-info">
             <label for="electricity">Electricity</label>
             <div class="hint">kWh used / month</div>
           </div>
         </div>
-        <input type="number" id="electricity" min="0" value="200" aria-label="Electricity used in kWh per month" />
+        <input type="number" id="electricity" min="0" max="99999" value="200" autocomplete="off" aria-label="Electricity used in kWh per month" />
       </div>
 
       <div class="input-card">
         <div class="card-header">
-          <div class="card-emoji">🍖</div>
+          <div class="card-emoji" aria-hidden="true">🍖</div>
           <div class="card-info">
             <label for="diet">Diet type</label>
             <div class="hint">your typical diet</div>
           </div>
         </div>
-        <select id="diet" aria-label="Diet type">
+        <select id="diet" aria-label="Select your diet type">
           <option value="meat-heavy">Meat-heavy</option>
           <option value="average" selected>Average (some meat)</option>
           <option value="vegetarian">Vegetarian</option>
@@ -103,51 +113,52 @@
 
       <div class="input-card">
         <div class="card-header">
-          <div class="card-emoji">🛍️</div>
+          <div class="card-emoji" aria-hidden="true">🛍️</div>
           <div class="card-info">
             <label for="shopping">Shopping spend</label>
             <div class="hint">₹ on goods / month</div>
           </div>
         </div>
-        <input type="number" id="shopping" min="0" value="5000" aria-label="Monthly shopping spend in rupees" />
+        <input type="number" id="shopping" min="0" max="9999999" value="5000" autocomplete="off" aria-label="Monthly shopping spend in rupees" />
       </div>
 
       <div class="input-card">
         <div class="card-header">
-          <div class="card-emoji">🚌</div>
+          <div class="card-emoji" aria-hidden="true">🚌</div>
           <div class="card-info">
             <label for="public-km">Public transport</label>
             <div class="hint">km / month (bus/train)</div>
           </div>
         </div>
-        <input type="number" id="public-km" min="0" value="100" aria-label="Kilometres on public transport per month" />
+        <input type="number" id="public-km" min="0" max="50000" value="100" autocomplete="off" aria-label="Kilometres on public transport per month" />
       </div>
+
     </div>
 
     <div class="calc-btn-row">
-      <button class="btn-primary" onclick="calculate()">Calculate footprint →</button>
-      <button class="btn-secondary" onclick="resetForm()">Reset</button>
+      <button class="btn-primary" onclick="calculate()" aria-label="Calculate my carbon footprint">Calculate footprint →</button>
+      <button class="btn-secondary" onclick="resetForm()" aria-label="Reset all inputs to defaults">Reset</button>
     </div>
   </section>
 
   <!-- RESULT -->
-  <section id="result-panel" class="result-panel" aria-live="polite">
+  <section id="result-panel" class="result-panel" aria-live="polite" aria-labelledby="result-heading">
 
     <div class="sec-header">
       <span class="sec-step">Step 02</span>
-      <span class="sec-title">Your results</span>
+      <span class="sec-title" id="result-heading">Your results</span>
     </div>
 
     <!-- RESULT HERO -->
     <div class="result-hero-card">
       <div class="result-main-row">
         <div class="result-number-wrap">
-          <div id="result-number" class="result-number"></div>
+          <div id="result-number" class="result-number" aria-label="Total monthly CO2 in kg"></div>
           <div class="result-unit-label">kg CO₂ per month</div>
-          <div id="result-label" class="result-verdict"></div>
+          <div id="result-label" class="result-verdict" role="status"></div>
         </div>
-        <div class="gauge-container">
-          <svg id="gauge-svg" width="220" height="120" viewBox="0 0 220 120" aria-label="Emissions gauge" role="img">
+        <div class="gauge-container" aria-hidden="true">
+          <svg id="gauge-svg" width="220" height="120" viewBox="0 0 220 120" role="img" aria-label="Emissions gauge">
             <defs>
               <linearGradient id="gGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%"   stop-color="#39ff8a"/>
@@ -209,7 +220,12 @@
 
 <footer>
   <p>CarbonTrace · Built for PromptWars Challenge 3 — Carbon Footprint Awareness Platform</p>
-  <p>Emission factors based on IPCC & IEA data · For awareness purposes only</p>
-  </footer>
-  <script src="script.js"></script>
-  
+  <p>Emission factors based on IPCC &amp; IEA data · For awareness purposes only</p>
+</footer>
+
+<!-- script loaded at end of body for performance -->
+<script src="script.js" defer></script>
+
+</body>
+  </html>
+
