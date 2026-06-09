@@ -8,13 +8,13 @@ A sleek, interactive web app that helps users calculate, visualize, and reduce t
 
 ## 🚀 Live Demo
 
-🔗 [View Live App](https://SulthanBashaMulla.github.io/carbontrace)
+🔗 [View Live App](https://sulthanbashamulla.github.io/CarbonTrace/)
 
 ---
 
 ## 📸 Preview
 
-![CarbonTrace Preview](preview.png)
+![CarbonTrace Preview](https://i.postimg.cc/KYrBc7d6/Carbon-Trace.jpg)
 
 ---
 
