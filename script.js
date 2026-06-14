@@ -499,4 +499,5 @@ function pledge(btn) {
   pledgeCount += 1;
   DOM.pledgeMsg.textContent = `✓ Pledge accepted — you're one of ${pledgeCount} people acting this month.`;
      }
-                     
+
+       
